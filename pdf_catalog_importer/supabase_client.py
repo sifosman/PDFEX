@@ -28,14 +28,15 @@ class SupabaseService:
         storage = self.client.storage.from_(self.config.product_images_bucket)
         for asset in assets:
             path = f"{product_code}/{asset.filename}"
+            upload_options = {
+                "contentType": asset.content_type,
+                "cacheControl": "3600",
+                "upsert": "true",
+            }
             storage.upload(
                 path,
                 asset.data,
-                {
-                    "content-type": asset.content_type,
-                    "cache-control": "3600",
-                    "upsert": True,
-                },
+                upload_options,
             )
             public_url = storage.get_public_url(path)
             image_urls.append(public_url)
