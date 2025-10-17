@@ -43,3 +43,24 @@ python -m pdf_catalog_importer.cli --pdf "c:/Users/S2029790/OneDrive - SARS/Pict
 ## Notes
 - Parser heuristics are tuned for the catalogue layout shown. Review `pdf_catalog_importer/pdf_parser.py` to adjust extraction rules if future catalogues differ.
 - Prices are left `NULL` when not provided, per current requirement.
+
+## Web storefront
+- **Install dependencies**
+```
+cd web
+npm install
+```
+- **Environment variables**: create `web/.env.local`
+```
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+- **Run dev server**
+```
+npm run dev -- --host
+```
+- **Build for production**
+```
+npm run build
+npm run preview
+```
