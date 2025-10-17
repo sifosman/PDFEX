@@ -13,7 +13,7 @@ class SupabaseService:
         self._ensure_bucket_exists()
 
     def _ensure_bucket_exists(self) -> None:
-        storage = self.client.storage()
+        storage = self.client.storage
         buckets = storage.list_buckets()
         bucket_names = {bucket["name"] for bucket in buckets}
         if self.config.product_images_bucket not in bucket_names:
@@ -21,7 +21,7 @@ class SupabaseService:
 
     def upload_assets(self, product_code: str, assets: Iterable[ProductAsset]) -> List[str]:
         image_urls: List[str] = []
-        storage = self.client.storage().from_(self.config.product_images_bucket)
+        storage = self.client.storage.from_(self.config.product_images_bucket)
         for asset in assets:
             path = f"{product_code}/{asset.filename}"
             storage.upload(
