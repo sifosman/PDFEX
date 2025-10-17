@@ -15,9 +15,13 @@ class SupabaseService:
     def _ensure_bucket_exists(self) -> None:
         storage = self.client.storage
         buckets = storage.list_buckets()
-        bucket_names = {bucket["name"] for bucket in buckets}
+        bucket_names = {getattr(bucket, "name", None) or getattr(bucket, "id", None) for bucket in buckets}
+        bucket_names.discard(None)
         if self.config.product_images_bucket not in bucket_names:
-            storage.create_bucket(self.config.product_images_bucket, public=True)
+            storage.create_bucket(
+                self.config.product_images_bucket,
+                options={"public": True},
+            )
 
     def upload_assets(self, product_code: str, assets: Iterable[ProductAsset]) -> List[str]:
         image_urls: List[str] = []
